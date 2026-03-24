@@ -18,7 +18,7 @@ def register(
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    hashed_pw = auth.get_password_hash(user_data.password)
+    hashed_pw = user_data.password
     new_user = models.User(
         email=user_data.email,
         hashed_password=hashed_pw,
@@ -47,7 +47,7 @@ def login(
         models.User.email == form_data.username
     ).first()
     
-    if not user or not auth.verify_password(form_data.password, user.hashed_password):
+    if not user or not form_data.password == user.hashed_password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",

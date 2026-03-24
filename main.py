@@ -6,9 +6,12 @@ import models
 import auth
 from config import settings
 from routers import auth as auth_router, users, opportunities, admin
+import uvicorn
 
 Base.metadata.create_all(bind=engine)
 
+if __name__ == "__main__":
+    uvicorn.run("main:app", reload=True)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
